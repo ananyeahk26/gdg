@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Pitch//Break Leaderboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05070d;--card:#0d1220;--line:#222b45;--tx:#fff;--mut:#9aa3b8;--y:#FBBC04;--b:#4285F4;--r:#EA4335;--g:#34A853;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--tx);font-family:Poppins,system-ui,sans-serif;background:radial-gradient(420px 320px at 0 0,#1e5aff55,transparent),radial-gradient(380px 300px at 100% 0,#fbaa0044,transparent),radial-gradient(360px 420px at 100% 55%,#1ea04644,transparent),radial-gradient(380px 300px at 0 100%,#fbaa0033,transparent),var(--bg)}
+.w{max-width:640px;margin:0 auto;padding:22px 16px 40px}
+.logos{display:flex;align-items:center;justify-content:center;gap:14px}
+.logos img.gdg{width:46px;height:46px}.logos img.ely{height:30px;max-width:46vw}.logos span{color:var(--mut);font-weight:300;font-size:22px}
+.pre{text-align:center;color:var(--mut);letter-spacing:.35em;font-weight:300;font-size:13px;margin:14px 0 2px}
+h1{margin:0;text-align:center;font-weight:800;font-size:clamp(34px,10vw,58px);line-height:1.02;letter-spacing:-.01em}
+.sl{display:inline-flex;gap:5px;margin:0 6px;vertical-align:-1px}.sl i{width:.17em;height:.82em;transform:skewX(-18deg);display:block;border-radius:2px}
+.sl i:first-child{background:linear-gradient(#3b78ff,#1f4fe0)}.sl i:last-child{background:linear-gradient(var(--r),var(--y))}
+.sub{text-align:center;letter-spacing:.3em;font-size:12px;font-weight:500;color:#dfe3ee;margin:12px 0 10px}
+.bar{display:flex;width:220px;height:4px;margin:0 auto 22px}.bar i{flex:1}.bar i:nth-child(1){background:var(--b)}.bar i:nth-child(2){background:var(--r)}.bar i:nth-child(3){background:var(--y)}.bar i:nth-child(4){background:var(--g)}
+.row{position:relative;display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:12px;padding:13px 14px;margin-bottom:9px;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.row:before{content:"";position:absolute;inset:0;width:var(--w);background:linear-gradient(90deg,#4285f426,#4285f405);pointer-events:none}
+.row>*{position:relative}
+.rk{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:16px;background:#1a2138;color:#dfe3ee}
+.t1{border-color:#fbbc0488}.t1 .rk{background:var(--y);color:#241a00}.t2 .rk{background:#cbd5e1;color:#111827}.t3 .rk{background:#d98b4a;color:#2a1200}
+.nm{font-weight:500;font-size:17px;overflow-wrap:anywhere}.nm small{display:block;font-size:12px;color:var(--mut);font-weight:300}
+.pt{font-weight:800;font-size:22px;text-align:right}.pt small{display:block;font-size:12px;font-weight:500}
+.up{color:#5bd47e}.dn{color:#ff7a6e}.eq{color:var(--mut)}
+.empty{text-align:center;color:var(--mut);padding:40px 10px;border:1px dashed var(--line);border-radius:14px}
+#upd{text-align:center;color:var(--mut);font-size:12px;margin-top:18px}
+#adm{display:none;margin-top:30px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+.admin #adm{display:block}
+#adm h2{margin:0 0 4px;font-size:17px;font-weight:700}#adm p{margin:0 0 12px;color:var(--mut);font-size:13px;line-height:1.5}
+.btn{font:inherit;font-weight:500;font-size:14px;border:0;border-radius:10px;padding:11px 16px;cursor:pointer;background:var(--b);color:#fff}
+.btn.s{background:#1a2138;color:#dfe3ee}.btn:disabled{opacity:.4;cursor:default}
+#msg{margin:12px 0 0;font-size:13px;min-height:18px;color:var(--mut)}#msg.err{color:#ff7a6e}#msg.ok{color:#5bd47e}
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+input[type=file]{display:none}
+</style></head>
+<body>
+<div class="w">
+<div class="logos"><img class="gdg" alt="GDG" src="gdg.png"><span>&times;</span><img class="ely" alt="Elysian" src="elysian.png"></div>
+<div class="pre">LIVE</div>
+<h1>PITCH<span class="sl"><i></i><i></i></span>BREAK</h1>
+<div class="sub">LEADERBOARD</div>
+<div class="bar"><i></i><i></i><i></i><i></i></div>
+<div id="board"></div>
+<div id="upd"></div>
+<div id="adm">
+<h2>Admin &middot; update scores</h2>
+<p>Upload your points CSV. First row = headers. Needs a team column (Team / Name) and either a Points / Total / Score column, or several round columns that get added up.</p>
+<input id="pw" type="password" placeholder="Admin password" autocomplete="current-password" style="display:block;width:100%;margin:0 0 12px;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:#0a0f1c;color:var(--tx);font:inherit;font-size:14px">
+<label class="btn s" for="f">Choose CSV file</label><input id="f" type="file" accept=".csv,text/csv,text/plain">
+<div id="msg"></div>
+<div class="acts"><button class="btn" id="go" disabled>Publish to leaderboard</button><button class="btn s" id="clr">Clear all</button></div>
+</div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+let S={teams:[],t:''},pend=null;
+function render(){
+ const b=$('board');b.replaceChildren();
+ if(!S.teams.length){const e=document.createElement('div');e.className='empty';e.textContent='Scores will appear here once the first round is judged.';b.append(e);$('upd').textContent='';return}
+ const mx=Math.max(...S.teams.map(t=>t.p),1);
+ S.teams.forEach(t=>{
+  const d=document.createElement('div');d.className='row'+(t.k<=3?' t'+t.k:'');d.style.setProperty('--w',Math.max(t.p/mx*100,3)+'%');
+  const rk=document.createElement('div');rk.className='rk';rk.textContent=t.k;
+  const nm=document.createElement('div');nm.className='nm';nm.textContent=t.n;
+  const pt=document.createElement('div');pt.className='pt';pt.textContent=t.p;
+  const dl=document.createElement('small');
+  if(t.o==null||t.o===t.k){dl.className='eq';dl.textContent='\u2013'}else if(t.o>t.k){dl.className='up';dl.textContent='\u25B2 '+(t.o-t.k)}else{dl.className='dn';dl.textContent='\u25BC '+(t.k-t.o)}
+  pt.append(dl);d.append(rk,nm,pt);b.append(d)});
+ if(S.t)$('upd').textContent='Updated '+new Date(S.t).toLocaleString([], {day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})
+}
+
+async function load(){try{const r=await fetch('/api/scores',{cache:'no-store'});if(r.ok){S=await r.json();render()}}catch(e){}}
+load();setInterval(load,10000);
+function csv(t){const R=[];let r=[],c='',q=0;for(let i=0;i<t.length;i++){const h=t[i];if(q){if(h=='"'){if(t[i+1]=='"'){c+='"';i++}else q=0}else c+=h}else if(h=='"')q=1;else if(h==','){r.push(c);c=''}else if(h=='\n'||h=='\r'){if(h=='\r'&&t[i+1]=='\n')i++;r.push(c);c='';if(r.some(x=>x.trim()))R.push(r);r=[]}else c+=h}r.push(c);if(r.some(x=>x.trim()))R.push(r);return R}
+function build(R){
+ if(R.length<2)throw Error('The file needs a header row and at least one team.');
+ const H=R[0].map(x=>x.trim().toLowerCase());
+ let tc=H.findIndex(x=>/team|name/.test(x));if(tc<0)tc=0;
+ let pc=H.findIndex((x,i)=>i!=tc&&/^(total|points?|score|marks)/.test(x));
+ const m=new Map();
+ R.slice(1).forEach(r=>{const n=(r[tc]||'').trim();if(!n)return;
+  let p=0;
+  if(pc>=0)p=parseFloat(r[pc])||0;else r.forEach((v,i)=>{if(i!=tc){const x=parseFloat(v);if(!isNaN(x))p+=x}});
+  m.set(n,(m.get(n)||0)+p)});
+ if(!m.size)throw Error('No teams found in the file.');
+ const old=new Map(S.teams.map(t=>[t.n,t.k]));
+ const a=[...m].map(([n,p])=>({n,p:Math.round(p*100)/100})).sort((x,y)=>y.p-x.p||x.n.localeCompare(y.n));
+ a.forEach((t,i)=>{t.k=i&&a[i-1].p===t.p?a[i-1].k:i+1;if(old.has(t.n))t.o=old.get(t.n)});
+ return a}
+function say(s,c){const m=$('msg');m.textContent=s;m.className=c||''}
+$('f').onchange=async e=>{
+ const f=e.target.files[0];if(!f)return;pend=null;$('go').disabled=true;
+ try{pend=build(csv((await f.text()).replace(/^\uFEFF/,'')));say(pend.length+' teams read from '+f.name+'. Top: '+pend[0].n+' ('+pend[0].p+'). Enter password and press Publish.','ok');$('go').disabled=false}
+ catch(x){say(x.message,'err')}
+ e.target.value=''};
+async function commit(teams){
+ const pw=$('pw').value;if(!pw){say('Enter the admin password first.','err');return}
+ say('Publishing\u2026');
+ try{const r=await fetch('/api/scores',{method:'POST',headers:{'Content-Type':'application/json','x-admin-password':pw},body:JSON.stringify({teams})});
+  if(r.status===401){say('Wrong password.','err');return}
+  if(!r.ok){say('Server error: '+((await r.json().catch(()=>({}))).error||r.status),'err');return}
+  S=await r.json();render();pend=null;$('go').disabled=true;say('Leaderboard updated.','ok')}
+ catch(x){say('Could not reach the server.','err')}}
+$('go').onclick=()=>pend&&commit(pend);
+$('clr').onclick=()=>{if(confirm('Clear the whole leaderboard?'))commit([])};
+if(location.hash==='#admin')document.body.classList.add('admin');
+</script>
+</body></html>
